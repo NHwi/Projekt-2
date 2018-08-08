@@ -5,14 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class Projekt2Controller {
     @Autowired
     LoginRepository lr;
-
-    List<User> users = lr.getAllUsers();
+    int activeRoom = 1;
+    List<User> users = new ArrayList<>();
 
     @PostMapping("/adduser")
     public String addUser(@RequestParam String username,
@@ -22,16 +25,25 @@ public class Projekt2Controller {
         return "index";
     }
 
+
     @PostMapping("/sendmessage")
-    public void sendMessage(@RequestParam String message,
-                            @RequestParam int userID,
-                            @RequestParam int roomID){
-        lr.addMessage(roomID, userID, message);
+    public ModelAndView sendMessage(@RequestParam String message){
+        lr.addMessage(1, 1, message);
+        return loadMessages();
     }
 
     @GetMapping("/")
-    public String index(){
+    public ModelAndView index() {
+        return loadMessages();
+    }
 
-        return "index";
+    public ModelAndView loadMessages(){
+        String messagesString = "";
+        List<Message> messageList = lr.getMessages(1);
+        for (Message message : messageList) {
+            messagesString += message.getDate() + ", " + message.getUsername() + ": " + message.getMessage();
+        }
+
+        return new ModelAndView("index").addObject("chatmessages", messageList);
     }
 }

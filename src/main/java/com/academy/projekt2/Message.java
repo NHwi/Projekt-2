@@ -1,39 +1,22 @@
 package com.academy.projekt2;
 
 public class Message {
-    private int id;
-    private int roomID;
-    private int userID;
+    private String username;
     private String message;
-    Message(int id, int roomID, int userID, String message){
-        this.id = id;
-        this.roomID = roomID;
-        this.userID = userID;
+    private String date;
+
+    public Message(String username, String message, String date) {
+        this.username = username;
         this.message = message;
+        this.date = date;
     }
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getRoomID() {
-        return roomID;
-    }
-
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getMessage() {
@@ -42,5 +25,13 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
