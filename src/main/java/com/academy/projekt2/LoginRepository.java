@@ -16,6 +16,21 @@ public class LoginRepository {
     @Autowired
     public DataSource dataSource;
 
+    public List<User> getAllUsers() {
+        List<User> templist = new ArrayList<>();
+        try {
+            Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT id, username, password, email FROM Users");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                templist.add(new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("email")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return templist;
+    }
+
     public List<Message> getMessages(int roomID) {
         List<Message> templist = new ArrayList<>();
         try {
@@ -73,26 +88,17 @@ public class LoginRepository {
     public int addUser(String email, String username, String password) {
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT COUNT (username) FROM Users WHERE username = ?");
+            PreparedStatement ps = conn.prepareStatement("EXEC CreateUser @username = ?, @password = ?, @email = ?", new String[]{"id"});
             ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
+            ps.setString(2, password);
+            ps.setString(3, email);
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+
             rs.next();
-            if (rs.getInt(1) == 0) {
-
-
-                ps = conn.prepareStatement("EXEC CreateUser @username = ?, @password = ?, @email = ?", new String[]{"id"});
-                ps.setString(1, username);
-                ps.setString(2, password);
-                ps.setString(3, email);
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-
-                rs.next();
-                return rs.getInt("GENERATED_KEYS");
-            }
-            throw new SQLException("Användaren existerar redan");
+            return rs.getInt("GENERATED_KEYS");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return 0;
         }
     }
