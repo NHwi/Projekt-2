@@ -9,7 +9,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <link rel="stylesheet" th:href="@{style.css}">
 </head>
 
 <body>
@@ -25,17 +25,20 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-4"></div>
 
-            <div class="col-md-4" style="border:1px soild black">
+
+            <div class="col-md-8">
     
-                <button id="room">Create room</button>
-                <h3>Column 1</h3>
-                <p>Lorem ipsum dolor..</p>
-                <p>Ut enim ad..</p>
+
+                <div id="box1"></div>
+                <form id="text"> <br>
+                    <input type="text"><br></form>
+                <button id="send">Send</button>
             </div>
 
             <div class="col-md-4">
+                <button id="room">Create room</button>
+                <h3>Column 1</h3>
 
 
             </div>
