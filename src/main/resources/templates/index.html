@@ -20,7 +20,42 @@
         <h1>Chatty</h1>
         <p>chat and enjoy</p>
         <button id="login">Login</button>
+
+
+        <div id="myModal" class="modal">
+
+
+            <div class="modal-content">
+                <span class="close">&times;</span>
+
+                <div class ="login-page">
+                    <div class="form">
+                        <form class="register-form hidden">
+                            <input type="text" placeholder="Username"/>
+                            <input type="password" id="pass" placeholder="Password"/>
+                            <input type="text" placeholder="Email"/>
+                            <button>create</button>
+                            <p class="message">Already Registered? <a id="login-button" href="#">Login</a>
+                            </p>
+                        </form>
+
+                        <form class="login-form">
+                            <input type="text" placeholder="Username"/>
+                            <input type="password" placeholder="Password"/>
+                            <button>login</button>
+                            <p class="message">Not Registered? <a id="register-button" href="#">Register</a>
+                            </p>
+
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+
 
     <div class="container">
         <div class="row">
@@ -38,6 +73,7 @@
 
             <div class="col-md-4">
                 <button id="room">Create room</button>
+                <button id="addUser">Add user</button>
                 <h3>Column 1</h3>
 
 
@@ -45,6 +81,6 @@
         </div>
     </div>
 
-    <script></script>
+    <script src="script.js"></script>
 
 </body>
