@@ -4,7 +4,7 @@
 
     <link rel="stylesheet" type="text/css" href="style.css">
 
-    <title>Chatty</title>
+    <title>Chitty</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -23,11 +23,11 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="form">
-                <form class="register-form hidden">
+                <form class="register-form hidden" th:action="@{adduser}" method="post">
                     <input type="text" name="username" placeholder="Username"/>
                     <input type="password" name="password" id="pass" placeholder="Password"/>
                     <input type="text" name="email" placeholder="Email"/>
-                    <button>create</button>
+                    <button type="submit">create</button>
                     <p class="message">Already Registered? <a id="login-button" href="#">Login</a>
                     </p>
                 </form>
@@ -44,14 +44,16 @@
     </div>
 
 </div>
-<div class="text-center row">
-    <div class="col-md-4 header"></div>
-    <div class="col-md-4 header">
-        <h1>Chatty</h1>
+<div class="text-center row" style="width: 100%;">
+    <div class="col-md-4 head"></div>
+    <div class="col-md-4 head">
+        <h1>Chitty</h1>
         <p>chat and enjoy</p>
     </div>
-    <div class="col-md-4 header">
-        <p style="float:right; margin: 20px;">Sign in  <img th:src="@{user.svg}" style="width: 40px; height: 40px">
+    <div class="col-md-4 head">
+        <div style="float:right; margin: 20px;width: fit-content" id="login">
+            <p id="loginLabel">Sign in </p><img th:src="@{user.svg}" style="width: 40px; height: 40px">
+        </div>
     </div>
 </div>
 
@@ -65,21 +67,20 @@
                 </p>
                 </tr>
             </div>
-            <form id="text" th:action="@{sendmessage}" method="post" style="display:inline-flex">
-                <input type="text" name="message">
-                <button type="submit" id="send" class="btn btn-primary">Send</button>
+            <form id="text" th:action="@{sendmessage}" method="post" style="width: 100%">
+                <input type="text" name="message" style="width: 85%; height: 30px">
+                <button type="submit" id="send" class="btn btn-primary"
+                        style="float: right; padding-right: 20px;padding-left: 20px">Send
+                </button>
             </form>
         </div>
 
         <div class="col-md-4">
-            <button id="login" class="btn btn-default">Login</button>
-
             <form id="addroom" th:action="@{addRoom}" method="post" style="display:inline-flex">
                 <input type="text" name="name">
                 <input type="text" name="description">
                 <button type="submit" id="room" class="btn btn-primary">Create room</button>
             </form>
-
             <button id="addUser" class="btn btn-default">Add user</button>
             <h3>Column 1</h3>
         </div>

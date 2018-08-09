@@ -18,19 +18,26 @@ public class Projekt2Controller {
     LoginRepository lr;
     int activeRoom = 1;
     List<User> users = new ArrayList<>();
+    int currentRoom = 1;
 
     @PostMapping("/adduser")
     public String addUser(@RequestParam String username,
                           @RequestParam String password,
                           @RequestParam String email){
         users.add(new User(lr.addUser(email, username, password),username, password, email));
-        return "index";
+        return "redirect:/";
     }
 
 
     @PostMapping("/sendmessage")
-    public String sendMessage(@RequestParam String message){
-        lr.addMessage(1, 1, message);
+    public String sendMessage(@RequestParam String message, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session == null) {
+            lr.addMessage(currentRoom, 0, message);
+        }
+        else {
+            lr.addMessage(currentRoom, (int)session.getAttribute("id"), message);
+        }
         return "redirect:/";
     }
 
@@ -72,7 +79,7 @@ public class Projekt2Controller {
         if (session.getAttribute("id")!=null) {
             int id = (int)session.getAttribute("id");
              users.remove(users.indexOf(id));
-
+             currentRoom = 1;
 
         }
         session.setAttribute("id",0);
