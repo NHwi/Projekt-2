@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,12 +50,40 @@ public class Projekt2Controller {
     }
     @PostMapping("/login")
     public String login(@RequestParam String username,
-                              @RequestParam String password){
-        if(lr.loggedIn(username, password) != null){
-            users.add(lr.loggedIn(username, password));
-            return "redirect:/";
-        }
-        return "redirect:/";
+                        @RequestParam String password,
+                        HttpServletRequest request)
+    { User user = lr.loggedIn(username, password);
+        if(user != null){
+            HttpSession session = request.getSession(true);
+            session.setAttribute("id",user.getId());
+            users.add(user);
 
+            return "redirect:/";
+
+        }
+
+        return "redirect:/";
     }
+
+    @GetMapping("/logout")
+     public String logout (
+             HttpServletRequest request){
+        HttpSession session = request.getSession(true);
+        if (session.getAttribute("id")!=null) {
+            int id = (int)session.getAttribute("id");
+             users.remove(users.indexOf(id));
+
+
+        }
+        session.setAttribute("id",0);
+        session.invalidate();
+        System.out.println(session.getAttribute("id"));
+    return "redirect:/";
+    }
+
+
+
+
+
+
 }
