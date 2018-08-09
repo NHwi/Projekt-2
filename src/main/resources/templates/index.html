@@ -20,7 +20,7 @@
     <div class="jumbotron text-center">
         <h1>Chatty</h1>
         <p>chat and enjoy</p>
-        <button id="login">Login</button>
+        <button id="login" class="btn btn-default">Login</button>
 
 
         <div id="myModal" class="modal">
@@ -71,13 +71,13 @@
                 </div>
                 <form id="text" th:action="@{sendmessage}" method="post" style="display:inline-flex">
                     <input type="text" name="message">
-                    <button type="submit" id="send">Send</button>
+                    <button type="submit" id="send" class="btn btn-primary">Send</button>
                 </form>
             </div>
 
             <div class="col-md-4">
-                <button id="room">Create room</button>
-                <button id="addUser">Add user</button>
+                <button id="room"class="btn btn-default">Create room</button>
+                <button id="addUser"class="btn btn-default">Add user</button>
                 <h3>Column 1</h3>
             </div>
         </div>
