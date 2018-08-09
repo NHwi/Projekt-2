@@ -44,19 +44,22 @@
     </div>
 
 </div>
-<div class="jumbotron text-center">
-    <h1>Chatty</h1>
-    <p>chat and enjoy</p>
-    <button id="login" class="btn btn-default">Login</button>
+<div class="text-center row">
+    <div class="col-md-4 header"></div>
+    <div class="col-md-4 header">
+        <h1>Chatty</h1>
+        <p>chat and enjoy</p>
+    </div>
+    <div class="col-md-4 header">
+        <p style="float:right; margin: 20px;">Sign in  <img th:src="@{user.svg}" style="width: 40px; height: 40px">
+    </div>
 </div>
 
 
 <div class="container">
     <div class="row">
-
-
         <div class="col-md-8">
-            <div id="box1" style="overflow: scroll;">
+            <div id="box1">
                 <p th:each="message :${chatmessages}"
                    th:text="${message.getDate() + '  <' + message.getUsername()+ '>:  ' + message.getMessage()} ">
                 </p>
@@ -69,6 +72,7 @@
         </div>
 
         <div class="col-md-4">
+            <button id="login" class="btn btn-default">Login</button>
             <button id="room" class="btn btn-default">Create room</button>
             <button id="addUser" class="btn btn-default">Add user</button>
             <h3>Column 1</h3>
