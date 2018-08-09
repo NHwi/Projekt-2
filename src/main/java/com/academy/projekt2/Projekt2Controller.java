@@ -82,6 +82,15 @@ public class Projekt2Controller {
     }
 
 
+    @PostMapping("/addRoom")
+
+    public String addRoom(@RequestParam String name,
+                          @RequestParam String description,
+                            HttpServletRequest request)
+       {
+        lr.addRoom(name, description, 1);
+        return "redirect:/";
+    }
 
 
 

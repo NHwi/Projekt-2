@@ -61,12 +61,13 @@ public class LoginRepository {
         }
     }
 
-    public void addRoom(String name, String description) {
+    public void addRoom(String name, String description, int userid) {
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Rooms VALUES(?,?)");
+            PreparedStatement ps = conn.prepareStatement("EXEC CreateRoom @name = ?, @description = ?, @userid = ?");
             ps.setString(1, name);
             ps.setString(2, description);
+            ps.setInt(3,userid);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
