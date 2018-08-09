@@ -39,7 +39,7 @@ public class Projekt2Controller {
 
     public ModelAndView loadMessages(){
         String messagesString = "";
-        List<Message> messageList = lr.getMessages(1);
+        List<Message> messageList = lr.getMessages(1, 100);
         for (Message message : messageList) {
             messagesString += message.getDate() + ", " + message.getUsername() + ": " + message.getMessage();
         }

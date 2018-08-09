@@ -31,12 +31,13 @@ public class LoginRepository {
         return templist;
     }
 
-    public List<Message> getMessages(int roomID) {
+    public List<Message> getMessages(int roomID, int numbers) {
         List<Message> templist = new ArrayList<>();
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("EXEC GetMessages @roomid = ?");
+            PreparedStatement ps = conn.prepareStatement("EXEC GetMessages @roomid = ?, @numbers = ?");
             ps.setString(1, Integer.toString(roomID));
+            ps.setString(2, Integer.toString(numbers));
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 templist.add(new Message(rs.getString("username"), rs.getString("message"), String.format("%02d", rs.getTime("date").getHours()) + ":" + String.format("%02d", rs.getTime("date").getMinutes())));
