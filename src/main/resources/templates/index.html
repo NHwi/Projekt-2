@@ -1,4 +1,4 @@
-<htmk xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
     <head>
 
@@ -28,14 +28,16 @@
 
 
             <div class="col-md-8">
-                <div id="box1" >
-                    <p th:each="message :${chatmessages}" th:text="${message.getDate() + '  <' + message.getUsername()+ '>:  ' + message.getMessage()} ">
+                <div id="box1">
+                    <p th:each="message :${chatmessages}"
+                       th:text="${message.getDate() + '  <' + message.getUsername()+ '>:  ' + message.getMessage()} ">
                     </p>
                     </tr>
                 </div>
-                <form id="text" th:action="@{sendmessage}" method="post"><br>
-                    <input type="text" name="message"><br></form>
-                <button type="submit" id="send">Send</button>
+                <form id="text" th:action="@{sendmessage}" method="post" style="display:inline-flex">
+                    <input type="text" name="message">
+                    <button type="submit" id="send">Send</button>
+                </form>
             </div>
 
             <div class="col-md-4">
@@ -50,4 +52,4 @@
     <script></script>
 
     </body>
-</htmk>
+</html>

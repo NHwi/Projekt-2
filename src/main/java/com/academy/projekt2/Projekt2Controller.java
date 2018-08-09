@@ -46,4 +46,14 @@ public class Projekt2Controller {
 
         return new ModelAndView("index").addObject("chatmessages", messageList);
     }
+    @PostMapping("/login")
+    public ModelAndView login(@RequestParam String username,
+                              @RequestParam String password){
+        if(lr.loggedIn(username, password) != null){
+            users.add(lr.loggedIn(username, password));
+            return new ModelAndView("index");
+        }
+        return new ModelAndView("index");
+
+    }
 }
