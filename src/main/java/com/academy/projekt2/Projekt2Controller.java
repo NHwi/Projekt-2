@@ -33,7 +33,7 @@ public class Projekt2Controller {
     public String sendMessage(@RequestParam String message, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session == null) {
-            lr.addMessage(currentRoom, 0, message);
+            lr.addMessage(currentRoom, 1, message);
         }
         else {
             lr.addMessage(currentRoom, (int)session.getAttribute("id"), message);
