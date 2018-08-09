@@ -35,11 +35,12 @@ public class LoginRepository {
         List<Message> templist = new ArrayList<>();
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, userid, message FROM Messages WHERE roomid = ?");
+            PreparedStatement ps = conn.prepareStatement("EXEC GetMessages @roomid = ?");
             ps.setString(1, Integer.toString(roomID));
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                templist.add(new Message(rs.getInt("id"), roomID, rs.getInt("userid"), rs.getString("message")));
+                templist.add(new Message(rs.getString("username"), rs.getString("message"), String.format("%02d", rs.getTime("date").getHours()) + ":" + String.format("%02d", rs.getTime("date").getMinutes())));
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,7 +75,7 @@ public class LoginRepository {
     public void addMessage(int roomID, int userID, String message) {
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Messages VALUES(?,?,?)");
+            PreparedStatement ps = conn.prepareStatement("EXEC CreateMessage @roomid = ?, @userid = ?,@message = ?");
 
             ps.setString(1, Integer.toString(roomID));
             ps.setString(2, Integer.toString(userID));
@@ -103,23 +104,22 @@ public class LoginRepository {
         }
     }
 
-    public int loggedIn(String username, String password) {
+    public User loggedIn(String username, String password) {
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, password FROM users WHERE username=?");
+            PreparedStatement ps = conn.prepareStatement("EXEC Login @username = ?, @password = ? ");
             ps.setString(1, username);
+            ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                if (password.equals(rs.getString("password"))) {
-                    return rs.getInt("id");
-                }
+            if (rs.next()){
+                return new User(rs.getInt("id"), username, password, rs.getString("email"));
             }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return null;
     }
 }
 

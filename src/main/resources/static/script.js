@@ -34,3 +34,6 @@ loginbutton.addEventListener('click',function(e){
     loginForm.classList.remove('hidden');
     e.preventDefault();
 });
+
+var objDiv = document.getElementById("box1");
+objDiv.scrollTop = objDiv.scrollHeight;
