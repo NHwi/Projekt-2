@@ -27,9 +27,9 @@ public class Projekt2Controller {
 
 
     @PostMapping("/sendmessage")
-    public ModelAndView sendMessage(@RequestParam String message){
+    public String sendMessage(@RequestParam String message){
         lr.addMessage(1, 1, message);
-        return loadMessages();
+        return "redirect:/";
     }
 
     @GetMapping("/")
