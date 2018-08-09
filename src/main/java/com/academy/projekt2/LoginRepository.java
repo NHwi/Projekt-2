@@ -16,21 +16,6 @@ public class LoginRepository {
     @Autowired
     public DataSource dataSource;
 
-    public List<User> getAllUsers() {
-        List<User> templist = new ArrayList<>();
-        try {
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, username, password, email FROM Users");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                templist.add(new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("email")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return templist;
-    }
-
     public List<Message> getMessages(int roomID, int numbers) {
         List<Message> templist = new ArrayList<>();
         try {
@@ -94,7 +79,7 @@ public class LoginRepository {
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, email);
-            ps.executeUpdate();
+            ps.executeQuery();
             ResultSet rs = ps.getGeneratedKeys();
 
             rs.next();

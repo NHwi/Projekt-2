@@ -1,11 +1,13 @@
 body {
     background-image: url("banner.jpg");
-    background-repeat:no-repeat;
-    background-size:cover;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
 }
+
 .container {
     padding-top: 20px;
-    background-color: #f1f1f1;
+    background-color: darkgrey;
     margin-left: 20%;
     margin-right: 20%;
     border-radius: 20px;
@@ -49,19 +51,28 @@ footer {
     width: fit-content;
     box-shadow: none;
 }
-.header >h1{
-     color: white;
+
+.head > h1 {
+    color: white;
     font-size: 64px;
     font-family: 'Lucida Console';
- }
-.header > p{
+}
+
+.head > p {
     color: white;
     font-size: 25px;
     font-family: 'Lucida Console';
 }
+#loginLabel {
+    color: white;
+    font-size: 25px;
+    font-family: 'Lucida Console';
+    display: inline;
+    vertical-align: center;
+}
 
 .close {
-    color: rgba(0,0,0,1);
+    color: rgba(0, 0, 0, 1);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -150,6 +161,8 @@ footer {
 
 }
 
-
-
- 
+#login:hover,
+#login:focus {
+    text-decoration: none;
+    cursor: pointer;
+}
