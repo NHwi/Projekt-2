@@ -19,6 +19,8 @@ public class Projekt2Controller {
     int activeRoom = 1;
     List<User> users = new ArrayList<>();
     int currentRoom = 1;
+    String loginText = "Sign In  ";
+    String btnclass = "";
 
     @PostMapping("/adduser")
     public String addUser(@RequestParam String username,
@@ -53,7 +55,10 @@ public class Projekt2Controller {
             messagesString += message.getDate() + ", " + message.getUsername() + ": " + message.getMessage();
         }
 
-        return new ModelAndView("index").addObject("chatmessages", messageList);
+        return new ModelAndView("index")
+                .addObject("chatmessages", messageList)
+                .addObject("logintext", loginText + "  ")
+                . addObject("btnclass", btnclass);
     }
     @PostMapping("/login")
     public String login(@RequestParam String username,
@@ -64,7 +69,8 @@ public class Projekt2Controller {
             HttpSession session = request.getSession(true);
             session.setAttribute("id",user.getId());
             users.add(user);
-
+            loginText = user.getUsername();
+            btnclass = "account";
             return "redirect:/";
 
         }
@@ -85,7 +91,9 @@ public class Projekt2Controller {
         session.setAttribute("id",0);
         session.invalidate();
         System.out.println(session.getAttribute("id"));
-    return "redirect:/";
+        btnclass = "";
+        loginText = "Sign In  ";
+        return "redirect:/";
     }
 
 
