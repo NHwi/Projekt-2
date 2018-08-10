@@ -109,7 +109,12 @@ public class Projekt2Controller {
                           @RequestParam String description,
                             HttpServletRequest request)
        {
-        lr.addRoom(name, description, 1);
+           HttpSession session = request.getSession(false);
+           if (session !=null) {
+                int id = (int) session.getAttribute("id");
+               lr.addRoom(name, description, id);
+               loadRooms(id);
+           }
         return "redirect:/";
     }
 
