@@ -121,7 +121,7 @@ public class Projekt2Controller {
            if (session !=null) {
                 int id = (int) session.getAttribute("id");
                lr.addRoom(name, description, id);
-               loadRooms(id);
+               loadRooms(request);
            }
         return "redirect:/";
     }
