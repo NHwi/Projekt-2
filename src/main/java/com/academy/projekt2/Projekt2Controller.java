@@ -18,9 +18,12 @@ public class Projekt2Controller {
     LoginRepository lr;
     int activeRoom = 1;
     List<User> users = new ArrayList<>();
+    List<Room> rooms = new ArrayList<>();
     int currentRoom = 1;
     String loginText = "Sign In  ";
     String btnclass = "";
+    String errorText = "";
+    String errorClass = "hidden";
 
     @PostMapping("/adduser")
     public String addUser(@RequestParam String username,
@@ -31,6 +34,11 @@ public class Projekt2Controller {
         return login(username, password, request);
     }
 
+    public String addError(String errorMessage){
+        errorText = errorMessage;
+        errorClass = "alert alert-danger";
+        return "redirect:/";
+    }
 
     @PostMapping("/sendmessage")
     public String sendMessage(@RequestParam String message, HttpServletRequest request){
@@ -49,9 +57,16 @@ public class Projekt2Controller {
         return loadMessages();
     }
 
+    public void loadRooms(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        System.out.println(session);
+        if(session != null)
+            rooms = lr.getRooms((int)session.getAttribute("id"));
+    }
+
     public ModelAndView loadMessages(){
         String messagesString = "";
-        List<Message> messageList = lr.getMessages(1, 100);
+        List<Message> messageList = lr.getMessages(currentRoom, 100);
         for (Message message : messageList) {
             messagesString += message.getDate() + ", " + message.getUsername() + ": " + message.getMessage();
         }
@@ -59,7 +74,9 @@ public class Projekt2Controller {
         return new ModelAndView("index")
                 .addObject("chatmessages", messageList)
                 .addObject("logintext", loginText + "  ")
-                . addObject("btnclass", btnclass);
+                .addObject("btnclass", btnclass).addObject("rooms", rooms)
+                .addObject("errorText", errorText)
+                .addObject("errorClass", errorClass);
     }
     @PostMapping("/login")
     public String login(@RequestParam String username,
@@ -69,6 +86,7 @@ public class Projekt2Controller {
         if(user != null){
             HttpSession session = request.getSession(true);
             session.setAttribute("id",user.getId());
+            loadRooms(request);
             users.add(user);
             loginText = user.getUsername();
             btnclass = "account";
@@ -85,7 +103,6 @@ public class Projekt2Controller {
         HttpSession session = request.getSession(true);
         if (session.getAttribute("id")!=null) {
             int id = (int)session.getAttribute("id");
-            System.out.println(id);
             for (int i = 0; i < users.size(); i++) {
                 if (users.get(i).getId() == id){
                     users.remove(i);
@@ -109,7 +126,19 @@ public class Projekt2Controller {
                           @RequestParam String description,
                             HttpServletRequest request)
        {
-        lr.addRoom(name, description, 1);
+           HttpSession session = request.getSession(false);
+           if (session !=null) {
+               System.out.println(name.length());
+               if(name.length() >= 3) {
+                   int id = (int) session.getAttribute("id");
+                   lr.addRoom(name, description, id);
+                   loadRooms(request);
+               } else{
+                    addError("Room name need to be atleast 3 letters long");
+               }
+           } else {
+               addError("You need to login to create a new room");
+           }
         return "redirect:/";
     }
 
