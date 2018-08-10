@@ -1,5 +1,5 @@
 body {
-    background-image: url("banner.jpg");
+    background-image: url("backgroundcolor.png");
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
@@ -12,7 +12,7 @@ body {
 
 .container {
     padding-top: 20px;
-    background-color: darkgrey;
+    background-color: #C9DBEE;
     border-radius: 20px;
 }
 
@@ -38,6 +38,8 @@ footer {
     background-color: #ffffff;
     overflow-y: scroll;
     overflow-wrap: break-word;
+    color:#458AC3;
+    font-family: "Roboto", sans-serif;
 }
 
 .modal {
@@ -101,7 +103,7 @@ footer {
 .form {
     position: relative;
     z-index: 1;
-    background: #ab91ce;
+    background: #C9DBEE;
     max-width: 360px;
     margin: 0;
     padding: 45px;
@@ -112,7 +114,7 @@ footer {
 .form input {
     font-family: "Roboto", sans-serif;
     outline: 1;
-    background: #c5c5c5;
+    background: #ffffff;
     color: #000000;
     width: 100%;
     border: 0;
@@ -124,29 +126,29 @@ footer {
 }
 
 .form input::placeholder {
-    color: #ffffff;
+    color: #458AC3;
 }
 
 .form button {
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     outline: 0;
-    background: #6156a3;
+    background: #89ABCF;
     width: 100%;
     border: 0;
     padding: 15px;
-    color: #e59393;
+    color: #ffffff;
     font-size: 14px;
     cursor: pointer;
 }
 
 .form button:hover, .form button:active {
-    background: #8d83c4;
+    background: #D8E7F6;
 }
 
 .form .message {
     margin: 15px 0 0;
-    color: aliceblue;
+    color: #458AC3;
     font-size: 12px;
 }
 
@@ -173,4 +175,26 @@ footer {
     width: fit-content;
     float: right;
     margin: 20px;
+
+}
+
+img{
+
+    float:left;
+}
+
+#addUser, #createroom-button, #send, #room{
+
+    background-color: #89ABCF;
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    border: 0;
+    padding: 15px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+#roomname, #description{
+    color:#458AC3;
 }
