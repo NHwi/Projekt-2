@@ -83,11 +83,17 @@
         </div>
 
         <div class="col-md-4">
-            <form id="addroom" th:action="@{addRoom}" method="post" style="display:inline-flex">
-                <input type="text" name="name">
-                <input type="text" name="description">
+            <button id="createroom-button" class="btn btn-default">Create Room</button>
+
+            <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post" style="display:inline-flex">
+                <div class = "formroom">
+                <input type="text" name="name" placeholder="Room name"/>
+                <input type="text" name="description" placeholder="Description"/>
+                </div>
                 <button type="submit" id="room" class="btn btn-primary">Create room</button>
             </form>
+
+
             <button id="addUser" class="btn btn-default">Add user</button>
             <h3>Column 1</h3>
         </div>
