@@ -22,6 +22,9 @@ let loginbutton = document.getElementById('login-button');
 let registerbutton = document.getElementById('register-button');
 let registerForm = document.querySelector('.register-form');
 let loginForm = document.querySelector('.login-form');
+let createroomForm = document.querySelector('.createroom-form')
+let createroombutton = document.getElementById('createroom-button');
+
 
 registerbutton.addEventListener('click', function(e) {
     registerForm.classList.remove('hidden');
@@ -34,6 +37,12 @@ loginbutton.addEventListener('click',function(e){
     loginForm.classList.remove('hidden');
     e.preventDefault();
 });
+
+createroombutton.addEventListener('click', function(e) {
+        createroomForm.classList.toggle('hidden');
+    e.preventDefault();
+});
+
 
 var objDiv = document.getElementById("box1");
 objDiv.scrollTop = objDiv.scrollHeight;
