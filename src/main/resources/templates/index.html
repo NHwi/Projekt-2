@@ -12,6 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" th:href="@{style.css}">
+    <link rel="shortcut icon" href="chittyicon.ico"/>
 </head>
 
 <body>
@@ -47,12 +48,13 @@
 <div class="text-center row" style="width: 100%;">
     <div class="col-md-4 head"></div>
     <div class="col-md-4 head">
-        <h1>Chitty</h1>
-        <p>chat and enjoy</p>
+        <img src="chittywhitelogo.svg" style="width: 300px; height: 200px">
     </div>
     <div class="col-md-4 head">
-        <div style="float:right; margin: 20px;width: fit-content" id="login">
-            <p id="loginLabel">Sign in </p><img th:src="@{user.svg}" style="width: 40px; height: 40px">
+        <div id="dropmenu" class="hidden"><a href="/logout">Sign out</a> </div>
+        <div id="login" th:class="${btnclass}">
+            <p id="loginLabel" th:text="${logintext}">Sign in </p><img th:src="@{user.svg}"
+                                                                       style="width: 40px; height: 40px">
         </div>
     </div>
 </div>

@@ -5,11 +5,16 @@ body {
     width: 100%;
 }
 
+#dropmenu{
+    width: 100%;
+    background: white;
+    border-radius: 5px;
+    height: 40px;
+}
+
 .container {
     padding-top: 20px;
     background-color: darkgrey;
-    margin-left: 20%;
-    margin-right: 20%;
     border-radius: 20px;
 }
 
@@ -165,4 +170,9 @@ footer {
 #login:focus {
     text-decoration: none;
     cursor: pointer;
+}
+#login{
+    width: fit-content;
+    float: right;
+    margin: 20px;
 }
