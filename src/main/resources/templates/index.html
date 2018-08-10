@@ -56,7 +56,8 @@
                 <a class="btn btn-default">Account</a>
                 <a class="btn btn-default">Rooms</a>
                 <a class="btn btn-default" href="/logout">Sign out</a>
-            </div></div>
+            </div>
+        </div>
         <div id="login" th:class="${btnclass}">
             <p id="loginLabel" th:text="${logintext}">Sign in </p><img th:src="@{user.svg}"
                                                                        style="width: 40px; height: 40px">
@@ -69,9 +70,9 @@
     <div class="row">
         <div class="col-md-8">
             <div id="box1">
-                <p th:each="message :${chatmessages}"
-                   th:text="${message.getDate() + '  <' + message.getUsername()+ '>:  ' + message.getMessage()} ">
-                </p>
+                <span th:each="message :${chatmessages}" style="display: block;" th:title="${message.getDate()}"
+                      th:text="${'<' + message.getUsername() + '>:  ' + message.getMessage()} ">
+                </span>
                 </tr>
             </div>
             <form id="text" th:action="@{sendmessage}" method="post" style="width: 100%">
@@ -85,17 +86,19 @@
         <div class="col-md-4">
             <button id="createroom-button" class="btn btn-default">Create Room</button>
 
-            <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post" style="display:inline-flex">
-                <div class = "formroom">
-                <input type="text" name="name" placeholder="Room name"/>
-                <input type="text" name="description" placeholder="Description"/>
+            <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post"
+                  style="display:inline-flex">
+                <div class="formroom">
+                    <input type="text" name="name" placeholder="Room name"/>
+                    <input type="text" name="description" placeholder="Description"/>
                 </div>
                 <button type="submit" id="room" class="btn btn-primary">Create room</button>
             </form>
-
-
             <button id="addUser" class="btn btn-default">Add user</button>
-            <h3>Column 1</h3>
+            <div style="height: auto; width: 100%"></div>
+                <h1>Rooms</h1>
+                <button class="btn btn-default" style="width: 100%" th:each="room :${rooms}" th:text="${room.getName()}">
+            </button>
         </div>
     </div>
 </div>
