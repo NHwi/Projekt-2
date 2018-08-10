@@ -138,6 +138,9 @@ public class Projekt2Controller {
                }
            } else {
                addError("You need to login to create a new room");
+                int id = (int) session.getAttribute("id");
+               lr.addRoom(name, description, id);
+               loadRooms(request);
            }
         return "redirect:/";
     }
