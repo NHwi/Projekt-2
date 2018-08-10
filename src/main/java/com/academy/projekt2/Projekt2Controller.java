@@ -22,6 +22,8 @@ public class Projekt2Controller {
     int currentRoom = 1;
     String loginText = "Sign In  ";
     String btnclass = "";
+    String errorText = "";
+    String errorClass = "hidden";
 
     @PostMapping("/adduser")
     public String addUser(@RequestParam String username,
@@ -32,6 +34,11 @@ public class Projekt2Controller {
         return login(username, password, request);
     }
 
+    public String addError(String errorMessage){
+        errorText = errorMessage;
+        errorClass = "alert alert-danger";
+        return "redirect:/";
+    }
 
     @PostMapping("/sendmessage")
     public String sendMessage(@RequestParam String message, HttpServletRequest request){
@@ -67,7 +74,9 @@ public class Projekt2Controller {
         return new ModelAndView("index")
                 .addObject("chatmessages", messageList)
                 .addObject("logintext", loginText + "  ")
-                . addObject("btnclass", btnclass).addObject("rooms", rooms);
+                .addObject("btnclass", btnclass).addObject("rooms", rooms)
+                .addObject("errorText", errorText)
+                .addObject("errorClass", errorClass);
     }
     @PostMapping("/login")
     public String login(@RequestParam String username,
@@ -119,9 +128,16 @@ public class Projekt2Controller {
        {
            HttpSession session = request.getSession(false);
            if (session !=null) {
-                int id = (int) session.getAttribute("id");
-               lr.addRoom(name, description, id);
-               loadRooms(id);
+               System.out.println(name.length());
+               if(name.length() >= 3) {
+                   int id = (int) session.getAttribute("id");
+                   lr.addRoom(name, description, id);
+                   loadRooms(request);
+               } else{
+                    addError("Room name need to be atleast 3 letters long");
+               }
+           } else {
+               addError("You need to login to create a new room");
            }
         return "redirect:/";
     }

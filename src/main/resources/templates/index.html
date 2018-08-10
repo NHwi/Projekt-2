@@ -46,9 +46,11 @@
 
 </div>
 <div class="text-center row" style="width: 100%;">
-    <div class="col-md-4 head"></div>
     <div class="col-md-4 head">
         <img src="chittywhitelogo.svg" style="width: 300px; height: 200px">
+    </div>
+    <div class="col-md-4 head">
+        <div id="error" th:text="${errorText}" th:class="${errorClass}"></div>
     </div>
     <div class="col-md-4 head" id="">
         <div id="dropmenu" class="hidden">
@@ -85,7 +87,6 @@
 
         <div class="col-md-4">
             <button id="createroom-button" class="btn btn-default">Create Room</button>
-
             <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post"
                   style="display:inline-flex">
                 <div class="formroom">
@@ -96,8 +97,8 @@
             </form>
             <button id="addUser" class="btn btn-default">Add user</button>
             <div style="height: auto; width: 100%"></div>
-                <h1>Rooms</h1>
-                <button class="btn btn-default" style="width: 100%" th:each="room :${rooms}" th:text="${room.getName()}">
+            <h1>Rooms</h1>
+            <button class="btn btn-default" style="width: 100%" th:each="room :${rooms}" th:text="${room.getName()}">
             </button>
         </div>
     </div>
