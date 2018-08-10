@@ -25,9 +25,10 @@ public class Projekt2Controller {
     @PostMapping("/adduser")
     public String addUser(@RequestParam String username,
                           @RequestParam String password,
-                          @RequestParam String email){
+                          @RequestParam String email,
+                          HttpServletRequest request){
         users.add(new User(lr.addUser(email, username, password),username, password, email));
-        return "redirect:/";
+        return login(username, password, request);
     }
 
 
@@ -84,13 +85,18 @@ public class Projekt2Controller {
         HttpSession session = request.getSession(true);
         if (session.getAttribute("id")!=null) {
             int id = (int)session.getAttribute("id");
-             users.remove(users.indexOf(id));
+            System.out.println(id);
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getId() == id){
+                    users.remove(i);
+                    i = users.size();
+                }
+            }
              currentRoom = 1;
 
         }
         session.setAttribute("id",0);
         session.invalidate();
-        System.out.println(session.getAttribute("id"));
         btnclass = "";
         loginText = "Sign In  ";
         return "redirect:/";
