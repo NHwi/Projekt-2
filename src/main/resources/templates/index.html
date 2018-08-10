@@ -87,19 +87,25 @@
 
         <div class="col-md-4">
             <button id="createroom-button" class="btn btn-default">Create Room</button>
-            <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post"
-                  style="display:inline-flex">
-                <div class="formroom">
-                    <input type="text" name="name" placeholder="Room name"/>
-                    <input type="text" name="description" placeholder="Description"/>
+
+
+            <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post" style="display:inline-flex">
+                <div class = "formroom">
+                <input id="roomname" type="text" name="name" placeholder="Room name"/>
+                <input id="description" type="text" name="description" placeholder="Description"/>
+
                 </div>
                 <button type="submit" id="room" class="btn btn-primary">Create room</button>
             </form>
             <button id="addUser" class="btn btn-default">Add user</button>
+
+            <h3 style="color:#ffffff">Rooms</h3>
+
             <div style="height: auto; width: 100%"></div>
             <h1>Rooms</h1>
             <button class="btn btn-default" style="width: 100%" th:each="room :${rooms}" th:text="${room.getName()}">
             </button>
+
         </div>
     </div>
 </div>
