@@ -25,7 +25,7 @@ public class LoginRepository {
             ps.setString(2, Integer.toString(numbers));
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                templist.add(new Message(rs.getString("username"), rs.getString("message"), String.format("%02d", rs.getTime("date").getHours()) + ":" + String.format("%02d", rs.getTime("date").getMinutes())));
+                templist.add(new Message(rs.getString("username"), rs.getString("message"), rs.getString("date")));
 
             }
         } catch (SQLException e) {
@@ -52,11 +52,27 @@ public class LoginRepository {
             PreparedStatement ps = conn.prepareStatement("EXEC CreateRoom @name = ?, @description = ?, @userid = ?");
             ps.setString(1, name);
             ps.setString(2, description);
-            ps.setInt(3,userid);
+            ps.setInt(3, userid);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Room> getRooms(int userid) {
+        List<Room> templist = new ArrayList<>();
+        try {
+            Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement("EXEC GetRooms @userid = ?");
+            ps.setString(1, Integer.toString(userid));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                templist.add(new Room(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return templist;
     }
 
     public void addMessage(int roomID, int userID, String message) {
@@ -98,7 +114,7 @@ public class LoginRepository {
             ps.setString(1, username);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 return new User(rs.getInt("id"), username, password, rs.getString("email"));
             }
 
