@@ -142,7 +142,18 @@ public class Projekt2Controller {
         return "redirect:/";
     }
 
+    @PostMapping("/addKeys")
 
-
+    public String addKey(@RequestParam String name,
+                          HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(false);
+        if (session !=null) {
+                int uid = (int) session.getAttribute("id");
+                lr.addKey(uid, 19, name);
+                loadRooms(request);
+            }
+        return "redirect:/";
+    }
 
 }

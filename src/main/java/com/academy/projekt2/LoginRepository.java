@@ -34,12 +34,13 @@ public class LoginRepository {
         return templist;
     }
 
-    public void addKey(int userID, int roomID) {
+    public void addKey(int userid, int roomid, String username) {
         try {
             Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Keys VALUES(?,?)");
-            ps.setString(1, Integer.toString(userID));
-            ps.setString(2, Integer.toString(roomID));
+            PreparedStatement ps = conn.prepareStatement("EXEC CreateKey @userid = ?, @roomid = ?, @username =?");
+            ps.setInt(1, userid);
+            ps.setInt(2, roomid);
+            ps.setString(3 , username);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

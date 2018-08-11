@@ -33,6 +33,8 @@ let registerForm = document.querySelector('.register-form');
 let loginForm = document.querySelector('.login-form');
 let createroomForm = document.querySelector('.createroom-form')
 let createroombutton = document.getElementById('createroom-button');
+let addUserForm = document.querySelector('.addUser-form')
+let adduserbutton = document.getElementById('adduser-button');
 
 
 registerbutton.addEventListener('click', function (e) {
@@ -49,6 +51,11 @@ loginbutton.addEventListener('click', function (e) {
 
 createroombutton.addEventListener('click', function(e) {
         createroomForm.classList.toggle('hidden');
+    e.preventDefault();
+});
+
+adduserbutton.addEventListener('click', function(e) {
+    addUserForm.classList.toggle('hidden');
     e.preventDefault();
 });
 

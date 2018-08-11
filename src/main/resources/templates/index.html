@@ -97,7 +97,14 @@
                 </div>
                 <button type="submit" id="room" class="btn btn-primary">Create room</button>
             </form>
-            <button id="addUser" class="btn btn-default">Add user</button>
+
+            <button id="adduser-button" class="btn btn-default">Add user</button>
+
+            <form class="addUser-form hidden" id = "addkey" th:action="@{addKeys}" method="post" style="width: 100%">
+                <input id="name" type="text" name="name" style="width: 85%; height: 30px" placeholder="Username"/>
+                <button type="submit" id="addkeys" class="btn btn-primary"
+                        style="float: right; padding-right: 20px;padding-left: 20px">Add User</button>
+            </form>
 
             <h3 style="color:#ffffff">Rooms</h3>
             <div style="height: auto; width: 100%"></div>
