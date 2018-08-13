@@ -58,8 +58,6 @@ public class Projekt2Controller {
     public ModelAndView index(@RequestParam(required = false, defaultValue = "1") int roomid, HttpServletRequest request) {
         loadRooms(request);
         currentRoom = roomid;
-        Thread updateThread = new Thread(updatePage);
-        updateThread.start();
         return loadMessages(roomid);
     }
 
@@ -162,18 +160,6 @@ public class Projekt2Controller {
            }
            return "redirect:/?roomid=" + currentRoom;
     }
-    private Runnable updatePage = new Runnable() {
-        public void run() {
-            try {
-                while (true) {
-                    loadMessages(currentRoom);
-                    Thread.sleep(1000);
-                }
-            } catch (InterruptedException iex) {
-                iex.printStackTrace();
-            }
-        }
-    };
 
     @PostMapping("/addKeys")
     public String addKey(@RequestParam String name,
