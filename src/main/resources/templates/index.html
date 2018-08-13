@@ -55,14 +55,13 @@
     <div class="col-md-4 head" id="">
         <div id="dropmenu" class="hidden">
             <div class="btn-group btn-group-justified">
-                <a class="btn btn-default">Account</a>
-                <a class="btn btn-default">Rooms</a>
-                <a class="btn btn-default" href="/logout">Sign out</a>
+                <button class="btn-menu" style="width: 33%">Account</button>
+                <button class="btn-menu" style="width: 33%">Rooms</button>
+                <button class="btn-menu" style="width: 33%" href="/logout">Sign out</button>
             </div>
         </div>
         <div id="login" th:class="${btnclass}">
-            <p id="loginLabel" th:text="${logintext}">Sign in </p><img th:src="@{user.svg}"
-                                                                       style="width: 40px; height: 40px">
+            <p id="loginLabel" th:text="${logintext}">Sign in </p><img th:src="@{user.svg}" style="width: 40px; height: 40px; float: right;">
         </div>
     </div>
 </div>
@@ -78,6 +77,7 @@
                 </tr>
             </div>
             <form id="text" th:action="@{sendmessage}" method="post" style="width: 100%">
+                <input type="hidden" th:value="${currentRoom}" name="room">
                 <input type="text" name="message" style="width: 85%; height: 30px">
                 <button type="submit" id="send" class="btn btn-primary"
                         style="float: right; padding-right: 20px;padding-left: 20px">Send
@@ -109,8 +109,7 @@
             <h3 style="color:#ffffff">Rooms</h3>
             <div style="height: auto; width: 100%"></div>
 
-            <button class="btn btn-default" style="width: 100%" th:each="room :${rooms}" th:text="${room.getName()}">
-            </button>
+            <a class="btn btn-default" style="width: 100%" th:href="@{/(roomid=${room.getId()})}" th:each="room :${rooms}" th:text="${room.getName()}"></a>
 
         </div>
     </div>
