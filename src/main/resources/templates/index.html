@@ -50,7 +50,7 @@
         <img src="chittywhitelogo.svg" style="width: 300px; height: 200px">
     </div>
     <div class="col-md-4 head">
-        <div id="error"  th:class="${errorClass}">
+        <div id="error" th:class="${errorClass}" style="overflow: hidden; min-width: 200px">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <p th:text="${errorText}"></p>
         </div>
@@ -60,11 +60,12 @@
             <div class="btn-group btn-group-justified">
                 <a class="btn btn-menu" style="width: 33%">Account</a>
                 <a class="btn btn-menu" style="width: 33%">Rooms</a>
-                <a id = "signout" class="btn btn-menu" style="width: 33%" href="/logout">Sign out</a>
+                <a id="signout" class="btn btn-menu" style="width: 33%" href="/logout">Sign out</a>
             </div>
         </div>
         <div id="login" th:class="${btnclass}">
-            <p id="loginLabel" th:text="${logintext}">Sign in </p><img th:src="@{user.svg}" style="width: 40px; height: 40px; float: right;">
+            <p id="loginLabel" th:text="${logintext}">Sign in </p><img th:src="@{user.svg}"
+                                                                       style="width: 40px; height: 40px; float: right;">
         </div>
     </div>
 </div>
@@ -73,7 +74,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <h1 th:text ="${roomtitle}"></h1>
+            <h1 th:text="${roomtitle}"></h1>
             <div id="box1">
                 <span th:each="message :${chatmessages}" style="display: block;" th:title="${message.getDate()}"
                       th:text="${'<' + message.getUsername() + '>:  ' + message.getMessage()} ">
@@ -93,10 +94,11 @@
             <button id="createroom-button" class="btn btn-default">Create Room</button>
 
 
-            <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post" style="display:inline-flex">
-                <div class = "formroom">
-                <input id="roomname" type="text" name="name" placeholder="Room name"/>
-                <input id="description" type="text" name="description" placeholder="Description"/>
+            <form class="createroom-form hidden" id="addroom" th:action="@{addRoom}" method="post"
+                  style="display:inline-flex">
+                <div class="formroom">
+                    <input id="roomname" type="text" name="name" placeholder="Room name"/>
+                    <input id="description" type="text" name="description" placeholder="Description"/>
 
                 </div>
                 <button type="submit" id="room" class="btn btn-primary">Done</button>
@@ -104,16 +106,18 @@
 
             <button id="adduser-button" class="btn btn-default">Add user</button>
 
-            <form class="addUser-form hidden" id = "addkey" th:action="@{addKeys}" method="post" >
+            <form class="addUser-form hidden" id="addkey" th:action="@{addKeys}" method="post">
                 <input id="name" type="text" name="name" style="width: 85%; height: 30px" placeholder="Username"/>
                 <button type="submit" id="addkeys" class="btn btn-primary"
-                        style="float: right; padding-right: 20px;padding-left: 20px">Done</button>
+                        style="float: right; padding-right: 20px;padding-left: 20px">Done
+                </button>
             </form>
 
             <h3 style="color:#ffffff">Rooms</h3>
             <div style="height: auto; width: 100%"></div>
 
-            <a class="btn btn-default" style="width: 100%" th:href="@{/(roomid=${room.getId()})}" th:each="room :${rooms}" th:text="${room.getName()}"></a>
+            <a class="btn btn-default" style="width: 100%" th:href="@{/(roomid=${room.getId()})}"
+               th:each="room :${rooms}" th:text="${room.getName()}"></a>
 
         </div>
     </div>
