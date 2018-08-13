@@ -106,7 +106,9 @@ public class LoginRepository {
             ps.executeQuery();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
-            return rs.getInt("GENERATED_KEYS");
+            int result = rs.getInt("GENERATED_KEYS");
+            conn.close();
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;

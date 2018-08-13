@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class Projekt2Controller {
@@ -70,8 +71,6 @@ public class Projekt2Controller {
     }
 
     public ModelAndView loadMessages(int roomid){
-        /*Thread updateThread = new Thread(updatePage);
-        updateThread.start();*/
 
         String messagesString = "";
         List<Message> messageList = lr.getMessages(roomid, 100);
@@ -161,18 +160,6 @@ public class Projekt2Controller {
            }
            return "redirect:/?roomid=" + currentRoom;
     }
-    /*Runnable updatePage = new Runnable() {
-        public void run() {
-            try {
-                while (true) {
-                    loadMessages(currentRoom);
-                    Thread.sleep(1000L);
-                }
-            } catch (InterruptedException iex) {
-                iex.printStackTrace();
-            }
-        }
-    };*/
 
     @PostMapping("/addKeys")
     public String addKey(@RequestParam String name,
