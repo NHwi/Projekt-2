@@ -184,7 +184,7 @@ img{
     float:left;
 }
 
-#addUser, #createroom-button, #send, #room{
+#addUser, #createroom-button, #send, #room, #addkeys, #adduser-button{
 
     background-color: #89ABCF;
     color: #ffffff;
@@ -199,3 +199,4 @@ img{
 #roomname, #description, .rooms, h1{
     color:#458AC3;
 }
+
