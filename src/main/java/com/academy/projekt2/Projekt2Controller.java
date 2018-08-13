@@ -94,7 +94,6 @@ public class Projekt2Controller {
             btnclass = "account";
 
             return "redirect:/?roomid=" + currentRoom;
-
         } else {
             addError("Wrong username or password");
         }
