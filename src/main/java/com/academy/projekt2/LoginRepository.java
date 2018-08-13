@@ -28,6 +28,7 @@ public class LoginRepository {
                 templist.add(new Message(rs.getString("username"), rs.getString("message"), rs.getString("date")));
 
             }
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,8 +41,9 @@ public class LoginRepository {
             PreparedStatement ps = conn.prepareStatement("EXEC CreateKey @userid = ?, @roomid = ?, @username =?");
             ps.setInt(1, userid);
             ps.setInt(2, roomid);
-            ps.setString(3 , username);
+            ps.setString(3, username);
             ps.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,6 +58,7 @@ public class LoginRepository {
             ps.setString(2, description);
             ps.setInt(3, userid);
             ps.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -71,6 +74,7 @@ public class LoginRepository {
             while (rs.next()) {
                 templist.add(new Room(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
             }
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,6 +90,7 @@ public class LoginRepository {
             ps.setString(2, Integer.toString(userID));
             ps.setString(3, message);
             ps.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -100,7 +105,6 @@ public class LoginRepository {
             ps.setString(3, email);
             ps.executeQuery();
             ResultSet rs = ps.getGeneratedKeys();
-
             rs.next();
             return rs.getInt("GENERATED_KEYS");
         } catch (SQLException e) {
@@ -119,6 +123,7 @@ public class LoginRepository {
             if (rs.next()) {
                 return new User(rs.getInt("id"), username, password, rs.getString("email"));
             }
+            conn.close();
 
 
         } catch (SQLException e) {
@@ -127,5 +132,3 @@ public class LoginRepository {
         return null;
     }
 }
-
-
