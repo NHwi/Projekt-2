@@ -61,3 +61,13 @@ adduserbutton.addEventListener('click', function(e) {
 
 var objDiv = document.getElementById("box1");
 objDiv.scrollTop = objDiv.scrollHeight;
+
+setInterval(function() {
+    $.ajax({
+        method: "GET",
+        url: "/"
+    })
+    .done(function( msg ) {
+        $("#box1").replaceWith($(msg).find("#box1"))
+    });
+}, 2000)
