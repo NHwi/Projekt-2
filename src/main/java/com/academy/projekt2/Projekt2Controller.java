@@ -65,6 +65,9 @@ public class Projekt2Controller {
     }
 
     public ModelAndView loadMessages(int roomid){
+        /*Thread updateThread = new Thread(updatePage);
+        updateThread.start();*/
+
         String messagesString = "";
         List<Message> messageList = lr.getMessages(roomid, 100);
         for (Message message : messageList) {
@@ -143,4 +146,17 @@ public class Projekt2Controller {
            }
            return "redirect:/?roomid=" + currentRoom;
     }
+
+    /*Runnable updatePage = new Runnable() {
+        public void run() {
+            try {
+                while (true) {
+                    loadMessages(currentRoom);
+                    Thread.sleep(1000L);
+                }
+            } catch (InterruptedException iex) {
+                iex.printStackTrace();
+            }
+        }
+    };*/
 }
