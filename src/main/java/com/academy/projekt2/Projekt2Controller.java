@@ -37,36 +37,36 @@ public class Projekt2Controller {
     public String addError(String errorMessage){
         errorText = errorMessage;
         errorClass = "alert alert-danger";
-        return "redirect:/";
+        return "redirect:/?roomid=" + currentRoom;
     }
 
     @PostMapping("/sendmessage")
-    public String sendMessage(@RequestParam String message, HttpServletRequest request){
+    public String sendMessage(@RequestParam String message, @RequestParam String room, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session == null) {
-            lr.addMessage(currentRoom, 1, message);
+            lr.addMessage(Integer.parseInt(room), 1, message);
         }
         else {
-            lr.addMessage(currentRoom, (int)session.getAttribute("id"), message);
+            lr.addMessage(Integer.parseInt(room), (int)session.getAttribute("id"), message);
         }
-        return "redirect:/";
+        return "redirect:/?roomid=" + currentRoom;
     }
 
     @GetMapping("/")
-    public ModelAndView index() {
-        return loadMessages();
+    public ModelAndView index(@RequestParam(required = false, defaultValue = "1") int roomid) {
+        currentRoom = roomid;
+        return loadMessages(roomid);
     }
 
     public void loadRooms(HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        System.out.println(session);
         if(session != null)
             rooms = lr.getRooms((int)session.getAttribute("id"));
     }
 
-    public ModelAndView loadMessages(){
+    public ModelAndView loadMessages(int roomid){
         String messagesString = "";
-        List<Message> messageList = lr.getMessages(currentRoom, 100);
+        List<Message> messageList = lr.getMessages(roomid, 100);
         for (Message message : messageList) {
             messagesString += message.getDate() + ", " + message.getUsername() + ": " + message.getMessage();
         }
@@ -76,7 +76,8 @@ public class Projekt2Controller {
                 .addObject("logintext", loginText + "  ")
                 .addObject("btnclass", btnclass).addObject("rooms", rooms)
                 .addObject("errorText", errorText)
-                .addObject("errorClass", errorClass);
+                .addObject("errorClass", errorClass)
+                .addObject("currentRoom", currentRoom);
     }
     @PostMapping("/login")
     public String login(@RequestParam String username,
@@ -84,17 +85,20 @@ public class Projekt2Controller {
                         HttpServletRequest request)
     { User user = lr.loggedIn(username, password);
         if(user != null){
+
             HttpSession session = request.getSession(true);
             session.setAttribute("id",user.getId());
             loadRooms(request);
             users.add(user);
             loginText = user.getUsername();
             btnclass = "account";
-            return "redirect:/";
 
+            return "redirect:/?roomid=" + currentRoom;
+
+        } else {
+            addError("Wrong username or password");
         }
-
-        return "redirect:/";
+        return "redirect:/?roomid=" + currentRoom;
     }
 
     @GetMapping("/logout")
@@ -116,12 +120,11 @@ public class Projekt2Controller {
         session.invalidate();
         btnclass = "";
         loginText = "Sign In  ";
-        return "redirect:/";
+        return "redirect:/?roomid=" + currentRoom;
     }
 
 
     @PostMapping("/addRoom")
-
     public String addRoom(@RequestParam String name,
                           @RequestParam String description,
                             HttpServletRequest request)
@@ -139,21 +142,6 @@ public class Projekt2Controller {
            } else {
                addError("You need to login to create a new room");
            }
-        return "redirect:/";
+           return "redirect:/?roomid=" + currentRoom;
     }
-
-    @PostMapping("/addKeys")
-
-    public String addKey(@RequestParam String name,
-                          HttpServletRequest request)
-    {
-        HttpSession session = request.getSession(false);
-        if (session !=null) {
-                int uid = (int) session.getAttribute("id");
-                lr.addKey(uid, 19, name);
-                loadRooms(request);
-            }
-        return "redirect:/";
-    }
-
 }
