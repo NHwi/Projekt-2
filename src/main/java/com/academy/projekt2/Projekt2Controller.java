@@ -58,19 +58,19 @@ public class Projekt2Controller {
     public ModelAndView index(@RequestParam(required = false, defaultValue = "1") int roomid, HttpServletRequest request) {
         loadRooms(request);
         currentRoom = roomid;
-        return loadMessages(roomid);
+        return loadMessages(roomid, request);
     }
 
     public void loadRooms(HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        if(session != null) {
+        if(session != null && session.getAttribute("id") != null) {
             rooms = lr.getRooms((int) session.getAttribute("id"));
         } else {
             rooms = lr.getRooms(1);
         }
     }
 
-    public ModelAndView loadMessages(int roomid){
+    public ModelAndView loadMessages(int roomid, HttpServletRequest request){
 
         String messagesString = "";
         List<Message> messageList = lr.getMessages(roomid, 100);
@@ -87,6 +87,20 @@ public class Projekt2Controller {
                 roomTitle = room.getName();
             }
         }
+
+        String loginText = "Sign in";
+
+        HttpSession session = request.getSession(true);
+        if(session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            btnclass = "account";
+            loginText = user.getUsername();
+            hidden = "";
+        } else {
+            btnclass = "";
+        }
+
+
         return new ModelAndView("index")
                 .addObject("chatmessages", messageList)
                 .addObject("logintext", loginText + "  ")
@@ -107,6 +121,8 @@ public class Projekt2Controller {
 
             HttpSession session = request.getSession(true);
             session.setAttribute("id",user.getId());
+            session.setAttribute("user", user);
+
             users.add(user);
             loginText = user.getUsername();
             btnclass = "account";
