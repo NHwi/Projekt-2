@@ -11,18 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Controller
 public class Projekt2Controller {
     @Autowired
     LoginRepository lr;
-    int activeRoom = 1;
     List<User> users = new ArrayList<>();
     List<Room> rooms = new ArrayList<>();
-    int currentRoom = 1;
-    String loginText = "Sign In  ";
-    String btnclass = "";
     String errorText = "";
     String errorClass = "hidden";
 
@@ -30,163 +25,171 @@ public class Projekt2Controller {
     public String addUser(@RequestParam String username,
                           @RequestParam String password,
                           @RequestParam String email,
-                          HttpServletRequest request){
-        users.add(new User(lr.addUser(email, username, password),username, password, email));
+                          HttpServletRequest request) {
+        users.add(new User(lr.addUser(email, username, password), username, password, email));
         return login(username, password, request);
     }
 
-    public String addError(String errorMessage){
-        //<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
+    public int getCurrentRoom(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            user = (User) session.getAttribute("user");
+            return user.getCurrentRoom();
+        } else {
+            return 1;
+        }
+    }
+
+    public String addError(String errorMessage, HttpServletRequest request) {
         errorText = errorMessage;
         errorClass = "alert alert-danger";
-        return "redirect:/?roomid=" + currentRoom;
+        return "redirect:/?roomid=" + getCurrentRoom(request);
     }
 
     @PostMapping("/sendmessage")
-    public String sendMessage(@RequestParam String message, @RequestParam String room, HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session == null) {
+    public String sendMessage(@RequestParam String message, @RequestParam String room, HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        if (session.getAttribute("user") == null) {
             lr.addMessage(Integer.parseInt(room), 1, message);
+        } else {
+            User user = (User) session.getAttribute("user");
+            lr.addMessage(Integer.parseInt(room), user.getId(), message);
         }
-        else {
-            lr.addMessage(Integer.parseInt(room), (int)session.getAttribute("id"), message);
-        }
-        return "redirect:/?roomid=" + currentRoom;
+        return "redirect:/?roomid=" + getCurrentRoom(request);
+
     }
 
     @GetMapping("/")
     public ModelAndView index(@RequestParam(required = false, defaultValue = "1") int roomid, HttpServletRequest request) {
         loadRooms(request);
-        currentRoom = roomid;
+        HttpSession session = request.getSession(true);
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            user = (User) session.getAttribute("user");
+            user.setCurrentRoom(roomid);
+        }
         return loadMessages(roomid, request);
     }
 
-    public void loadRooms(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session != null && session.getAttribute("id") != null) {
-            rooms = lr.getRooms((int) session.getAttribute("id"));
+    public void loadRooms(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            rooms = lr.getRooms(user.getId());
         } else {
             rooms = lr.getRooms(1);
         }
     }
 
-    public ModelAndView loadMessages(int roomid, HttpServletRequest request){
+    public ModelAndView loadMessages(int roomid, HttpServletRequest request) {
 
         String messagesString = "";
         List<Message> messageList = lr.getMessages(roomid, 100);
         for (Message message : messageList) {
             messagesString += message.getDate() + ", " + message.getUsername() + ": " + message.getMessage();
         }
-        String hidden = "hidden";
-        if (btnclass == "account"){
-            hidden = "";
-        }
         String roomTitle = "";
         for (Room room : rooms) {
-            if (room.getId() == currentRoom){
+            if (room.getId() == getCurrentRoom(request)) {
                 roomTitle = room.getName();
             }
         }
 
         String loginText = "Sign in";
-
+        String btnclass = "";
+        String hidden = "hidden";
         HttpSession session = request.getSession(true);
-        if(session.getAttribute("user") != null) {
+        if (session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             btnclass = "account";
             loginText = user.getUsername();
             hidden = "";
-        } else {
-            btnclass = "";
         }
-
+        String tempError = errorText;
+        String tempErrorClass = errorClass;
+        errorClass = "hidden";
+        errorText = "";
 
         return new ModelAndView("index")
                 .addObject("chatmessages", messageList)
                 .addObject("logintext", loginText + "  ")
                 .addObject("btnclass", btnclass)
                 .addObject("rooms", rooms)
-                .addObject("errorText", errorText)
-                .addObject("errorClass", errorClass)
-                .addObject("currentRoom", currentRoom)
+                .addObject("errorText", tempError)
+                .addObject("errorClass", tempErrorClass)
+                .addObject("currentRoom", getCurrentRoom(request))
                 .addObject("hidemenu", hidden)
                 .addObject("roomtitle", roomTitle);
     }
+
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
-                        HttpServletRequest request)
-    { User user = lr.loggedIn(username, password);
-        if(user != null){
+                        HttpServletRequest request) {
+        User user = lr.loggedIn(username, password);
+        if (user != null) {
 
             HttpSession session = request.getSession(true);
-            session.setAttribute("id",user.getId());
             session.setAttribute("user", user);
 
             users.add(user);
-            loginText = user.getUsername();
-            btnclass = "account";
 
-            return "redirect:/?roomid=" + currentRoom;
+            return "redirect:/?roomid=" + getCurrentRoom(request);
         } else {
-            addError("Wrong username or password");
+            return addError("Wrong username or password", request);
         }
-        return "redirect:/?roomid=" + currentRoom;
     }
 
     @GetMapping("/logout")
-     public String logout (
-             HttpServletRequest request){
+    public String logout(
+            HttpServletRequest request) {
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("id")!=null) {
-            int id = (int)session.getAttribute("id");
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
             for (int i = 0; i < users.size(); i++) {
-                if (users.get(i).getId() == id){
+                if (users.get(i) == user) {
                     users.remove(i);
                     i = users.size();
                 }
             }
-             currentRoom = 1;
 
         }
-        session.setAttribute("id",0);
+        session.setAttribute("user", 0);
         session.invalidate();
-        btnclass = "";
-        loginText = "Sign In  ";
-        return "redirect:/?roomid=" + currentRoom;
+        return "redirect:/?roomid=" + getCurrentRoom(request);
     }
 
 
     @PostMapping("/addRoom")
     public String addRoom(@RequestParam String name,
                           @RequestParam String description,
-                            HttpServletRequest request)
-       {
-           HttpSession session = request.getSession(false);
-           if (session !=null) {
-               if(name.length() >= 3) {
-                   int id = (int) session.getAttribute("id");
-                   lr.addRoom(name, description, id);
-                   loadRooms(request);
-               } else{
-                    addError("Room name need to be atleast 3 letters long");
-               }
-           } else {
-               addError("You need to login to create a new room");
-           }
-           return "redirect:/?roomid=" + currentRoom;
+                          HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            if (name.length() >= 3) {
+                User user = (User) session.getAttribute("user");
+                lr.addRoom(name, description, user.getId());
+                loadRooms(request);
+            } else {
+                return addError("Room name need to be atleast 3 letters long", request);
+            }
+        } else {
+            return addError("You need to login to create a new room", request);
+        }
+        return "redirect:/?roomid=" + getCurrentRoom(request);
     }
 
     @PostMapping("/addKeys")
     public String addKey(@RequestParam String name,
-                         HttpServletRequest request){
+                         HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session !=null) {
-            int uid = (int) session.getAttribute("id");
-            lr.addKey(uid, currentRoom, name);
+        if (session != null) {
+            User user = (User) session.getAttribute("user");
+            lr.addKey(user.getId(), getCurrentRoom(request), name);
             loadRooms(request);
         }
-        return "redirect:/?roomid=" +currentRoom;
+        return "redirect:/?roomid=" + getCurrentRoom(request);
     }
 
 }

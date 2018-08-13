@@ -5,6 +5,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private int currentRoom = 1;
 
     public User(int id, String username, String password, String email) {
         this.id = id;
@@ -43,5 +44,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public void setCurrentRoom(int currentRoom) {
+        this.currentRoom = currentRoom;
     }
 }
