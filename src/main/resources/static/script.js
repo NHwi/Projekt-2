@@ -1,9 +1,9 @@
-var modal = document.getElementById('myModal');
+let modal = document.getElementById('myModal');
 
-var btn = document.getElementById("login");
+let btn = document.getElementById("login");
 
-var span = document.getElementsByClassName("close")[0];
-var menu = document.getElementById("dropmenu");
+let span = document.getElementsByClassName("close")[0];
+let menu = document.getElementById("dropmenu");
 let signout = document.getElementById("signout");
 
 signout.onclick = function () {

@@ -35,6 +35,7 @@ public class Projekt2Controller {
     }
 
     public String addError(String errorMessage){
+        //<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
         errorText = errorMessage;
         errorClass = "alert alert-danger";
         return "redirect:/?roomid=" + currentRoom;
@@ -53,15 +54,19 @@ public class Projekt2Controller {
     }
 
     @GetMapping("/")
-    public ModelAndView index(@RequestParam(required = false, defaultValue = "1") int roomid) {
+    public ModelAndView index(@RequestParam(required = false, defaultValue = "1") int roomid, HttpServletRequest request) {
+        loadRooms(request);
         currentRoom = roomid;
         return loadMessages(roomid);
     }
 
     public void loadRooms(HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        if(session != null)
-            rooms = lr.getRooms((int)session.getAttribute("id"));
+        if(session != null) {
+            rooms = lr.getRooms((int) session.getAttribute("id"));
+        } else {
+            rooms = lr.getRooms(1);
+        }
     }
 
     public ModelAndView loadMessages(int roomid){
@@ -77,14 +82,22 @@ public class Projekt2Controller {
         if (btnclass == "account"){
             hidden = "";
         }
+        String roomTitle = "";
+        for (Room room : rooms) {
+            if (room.getId() == currentRoom){
+                roomTitle = room.getName();
+            }
+        }
         return new ModelAndView("index")
                 .addObject("chatmessages", messageList)
                 .addObject("logintext", loginText + "  ")
-                .addObject("btnclass", btnclass).addObject("rooms", rooms)
+                .addObject("btnclass", btnclass)
+                .addObject("rooms", rooms)
                 .addObject("errorText", errorText)
                 .addObject("errorClass", errorClass)
                 .addObject("currentRoom", currentRoom)
-                .addObject("hidemenu", hidden);
+                .addObject("hidemenu", hidden)
+                .addObject("roomtitle", roomTitle);
     }
     @PostMapping("/login")
     public String login(@RequestParam String username,
@@ -95,7 +108,6 @@ public class Projekt2Controller {
 
             HttpSession session = request.getSession(true);
             session.setAttribute("id",user.getId());
-            loadRooms(request);
             users.add(user);
             loginText = user.getUsername();
             btnclass = "account";

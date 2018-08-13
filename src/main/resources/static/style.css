@@ -34,7 +34,7 @@ footer {
     margin: 5px;
     float: left;
     width: 100%;
-    height: 65%;
+    height: 55%;
     background-color: #ffffff;
     overflow-y: scroll;
     overflow-wrap: break-word;
@@ -196,6 +196,6 @@ img{
     cursor: pointer;
 }
 
-#roomname, #description, .rooms{
+#roomname, #description, .rooms, h1{
     color:#458AC3;
 }
