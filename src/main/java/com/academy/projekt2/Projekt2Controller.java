@@ -165,10 +165,10 @@ public class Projekt2Controller {
         HttpSession session = request.getSession(false);
         if (session !=null) {
             int uid = (int) session.getAttribute("id");
-            lr.addKey(uid, 19, name);
+            lr.addKey(uid, currentRoom, name);
             loadRooms(request);
         }
-        return "redirect:/";
+        return "redirect:/?roomid=" +currentRoom;
     }
 
 }
