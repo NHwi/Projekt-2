@@ -149,7 +149,6 @@ public class Projekt2Controller {
        {
            HttpSession session = request.getSession(false);
            if (session !=null) {
-               System.out.println(name.length());
                if(name.length() >= 3) {
                    int id = (int) session.getAttribute("id");
                    lr.addRoom(name, description, id);
