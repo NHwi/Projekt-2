@@ -53,11 +53,11 @@
         <div id="error" th:text="${errorText}" th:class="${errorClass}"></div>
     </div>
     <div class="col-md-4 head" id="">
-        <div id="dropmenu" class="hidden">
+        <div id="dropmenu" th:class="${hidemenu}">
             <div class="btn-group btn-group-justified">
                 <a class="btn btn-menu" style="width: 33%">Account</a>
                 <a class="btn btn-menu" style="width: 33%">Rooms</a>
-                <a class="btn btn-menu" style="width: 33%" href="/logout">Sign out</a>
+                <a id = "signout" class="btn btn-menu" style="width: 33%" href="/logout">Sign out</a>
             </div>
         </div>
         <div id="login" th:class="${btnclass}">

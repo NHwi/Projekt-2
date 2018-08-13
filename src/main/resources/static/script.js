@@ -4,15 +4,14 @@ var btn = document.getElementById("login");
 
 var span = document.getElementsByClassName("close")[0];
 var menu = document.getElementById("dropmenu");
+let signout = document.getElementById("signout");
+
+signout.onclick = function () {
+    menu.classList.add("hidden");
+}
 
 btn.onclick = function () {
-    if (btn.classList.contains("account")) {
-        if(menu.classList.contains("hidden")){
-            menu.classList.remove("hidden");
-        } else {
-            menu.classList.add("hidden");
-        }
-    } else {
+    if (!btn.classList.contains("account")) {
         modal.style.display = "block";
     }
 }

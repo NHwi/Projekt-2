@@ -73,14 +73,18 @@ public class Projekt2Controller {
         for (Message message : messageList) {
             messagesString += message.getDate() + ", " + message.getUsername() + ": " + message.getMessage();
         }
-
+        String hidden = "hidden";
+        if (btnclass == "account"){
+            hidden = "";
+        }
         return new ModelAndView("index")
                 .addObject("chatmessages", messageList)
                 .addObject("logintext", loginText + "  ")
                 .addObject("btnclass", btnclass).addObject("rooms", rooms)
                 .addObject("errorText", errorText)
                 .addObject("errorClass", errorClass)
-                .addObject("currentRoom", currentRoom);
+                .addObject("currentRoom", currentRoom)
+                .addObject("hidemenu", hidden);
     }
     @PostMapping("/login")
     public String login(@RequestParam String username,
